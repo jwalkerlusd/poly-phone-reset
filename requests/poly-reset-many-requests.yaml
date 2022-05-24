@@ -1,0 +1,73 @@
+- id: poly_reset_phone_https_basic_auth
+  type: AxiosHttp
+  connectionId: poly_device
+  properties:
+    method: post
+    httpsAgentOptions:
+      rejectUnauthorized: false
+    url:
+      _string.concat:
+        - "https://"
+        - _state: hosts_list.$.host
+        - "/form-submit/Utilities/restorePhoneToFactory"
+    auth:
+      username: "Polycom"
+      password:
+        _secret: POLY_UI_PASSWORD
+    headers:
+      cookie:
+        _string.concat:
+          - "Authorization=Basic "
+          - _base64.encode:
+              _string.concat:
+                - "Polycom"
+                - ":"
+                - _secret: POLY_UI_PASSWORD
+- id: poly_request_csrf_auth
+  type: AxiosHttp
+  connectionId: poly_device
+  properties:
+    method: post
+    httpsAgentOptions:
+      rejectUnauthorized: false
+    url:
+      _string.concat:
+        - "https://"
+        - _state: hosts_list.$.host
+        - "/form-submit/auth.htm"
+    auth:
+      username: "Polycom"
+      password:
+        _secret: POLY_UI_PASSWORD
+- id: poly_request_csrf_index
+  type: AxiosHttp
+  connectionId: poly_device
+  properties:
+    method: get
+    httpsAgentOptions:
+      rejectUnauthorized: false
+    url:
+      _string.concat:
+        - "https://"
+        - _state: hosts_list.$.host
+        - "/index.htm"
+    headers:
+      cookie:
+        _state: hosts_list.$.cookie
+- id: poly_reset_phone_csrf
+  type: AxiosHttp
+  connectionId: poly_device
+  properties:
+    method: post
+    httpsAgentOptions:
+      rejectUnauthorized: false
+    url:
+      _string.concat:
+        - "https://"
+        - _state: hosts_list.$.host
+        - "/form-submit/Utilities/restorePhoneToFactory"
+    headers:
+      cookie:
+        _state: hosts_list.$.cookie
+      anti-csrf-token:
+        _state: hosts_list.$.csrf

@@ -1,0 +1,141 @@
+id: poly-reset-one
+type: PageHeaderMenu
+requests:
+  _ref: requests/poly-reset-requests.yaml
+areas:
+  content:
+    gutter: 6
+    blocks:
+      - id: input_host
+        type: TextInput
+        layout:
+          span: 4
+        required: true
+        properties:
+          title: Host
+          label:
+            inline: true
+      - id: button_reset_basic
+        type: Button
+        layout:
+          span: 4
+        properties:
+          title: Reset Phone (Basic Auth)
+        events:
+          onClick:
+            - id: validate
+              type: Validate
+              params: input_host
+            - id: set_state
+              type: SetState
+              params:
+                host:
+                  _state: input_host
+                # password:
+                #   _secret: POLY_UI_PASSWORD
+            - id: reset_device
+              type: Request
+              params: poly_reset_device_basic
+            - id: set_markdown_1
+              type: SetState
+              params:
+                markdown_1:
+                  _string.concat:
+                    - "```"
+                    - _json.stringify:
+                        - _request: poly_reset_device_basic
+      - id: button_reset_csrf
+        type: Button
+        layout:
+          span: 4
+        properties:
+          title: Reset Phone (CSRF Auth)
+        events:
+          onClick:
+            - id: set_state
+              type: SetState
+              params:
+                host:
+                  _state: input_host
+                # password:
+                #   _secret: POLY_UI_PASSWORD
+            - id: poly_auth
+              type: Request
+              params: poly_request_csrf_auth
+            - id: set_markdown_1
+              type: SetState
+              params:
+                markdown_1:
+                  _string.concat:
+                    - "```"
+                    - _json.stringify:
+                        - _request: poly_request_csrf_auth
+            - id: set_cookie
+              type: SetState
+              params:
+                cookie:
+                  _get:
+                    from:
+                      _string.split:
+                        on:
+                          _request: poly_request_csrf_auth.headers.set-cookie.0
+                        separator: ";"
+                    key: 0
+            - id: poly_index
+              type: Request
+              params: poly_request_csrf_index
+            - id: set_markdown_3
+              type: SetState
+              params:
+                markdown_3:
+                  _string.concat:
+                    - "```"
+                    - _json.stringify:
+                        - _request: poly_request_csrf_index
+            - id: set_csrf
+              type: SetState
+              params:
+                csrf:
+                  _get:
+                    from:
+                      _string.match:
+                        on:
+                          _request: poly_request_csrf_index.data
+                        regex: '<meta.+?name=\"csrf-token\".+?content=\"(.+?)\".*?\/>'
+                    key: 1
+            - id: poly_reset
+              type: Request
+              params: poly_reset_device_csrf
+            - id: set_markdown_5
+              type: SetState
+              params:
+                markdown_5:
+                  _string.concat:
+                    - "```"
+                    - _json.stringify:
+                        - _request: poly_reset_device_csrf
+      - id: markdown_1
+        type: Markdown
+        properties:
+          content:
+            _state: markdown_1
+      - id: markdown_2
+        type: Markdown
+        properties:
+          content:
+            _state: cookie
+      - id: markdown_3
+        type: Markdown
+        properties:
+          content:
+            _state: markdown_3
+      - id: markdown_4
+        type: Markdown
+        properties:
+          content:
+            _state: csrf
+      - id: markdown_5
+        type: Markdown
+        properties:
+          content:
+            _state: markdown_5

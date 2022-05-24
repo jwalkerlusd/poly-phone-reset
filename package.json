@@ -1,0 +1,23 @@
+{
+  "name": "poly-phone-reset",
+  "version": "0.0.1",
+  "description": "poly-phone-reset is a Web App built on Lowdefy for resetting one or many Poly brand phones using the phone's built-in Web UI.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwalkerlusd/poly-phone-reset.git"
+  },
+  "keywords": [
+    "poly",
+    "phones"
+  ],
+  "author": "Jeremy Walker (Lincoln USD)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jwalkerlusd/poly-phone-reset/issues"
+  },
+  "homepage": "https://github.com/jwalkerlusd/poly-phone-reset#readme"
+}

@@ -1,0 +1,11 @@
+lowdefy: 3.23.3
+name: LUSD Endpoint Manager
+app:
+  html:
+    appendHead: |
+      <script type="module" src="/public/csvMake.js"></script>
+connections:
+  - _ref: connections/poly-device.yaml
+pages:
+  - _ref: poly-reset-many.yaml
+  - _ref: poly-reset-one.yaml
